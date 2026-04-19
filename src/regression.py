@@ -47,8 +47,18 @@ def build_linear_regression(X_train, y_train):
         >>> hasattr(model, 'coef_')
         True
     """
+    
+    # Creates a LinearRegression model
+    model = LinearRegression()
+    
+    #Trains it using .fit(X_train, y_train)
+    model.fit(X_train, y_train)
+    
+    # Returns the trained model object, which can be used for making predictions and evaluating performance.
+    return model
+
     # TODO: Implement this function
-    raise NotImplementedError("Implement build_linear_regression()")
+    #raise NotImplementedError("Implement build_linear_regression()")
 
 
 def build_ridge_regression(X_train, y_train, alpha=1.0):
@@ -63,8 +73,18 @@ def build_ridge_regression(X_train, y_train, alpha=1.0):
     Returns:
         Ridge: Fitted model.
     """
+    
+    # Step 1: Create Ridge Regression model with given alpha
+    model = Ridge(alpha=alpha)
+
+    # Step 2: Fit the model using training data
+    model.fit(X_train, y_train)
+
+    # Step 3: Return trained model
+    return model
+
     # TODO: Implement this function
-    raise NotImplementedError("Implement build_ridge_regression()")
+    #raise NotImplementedError("Implement build_ridge_regression()")
 
 
 def build_lasso_regression(X_train, y_train, alpha=1.0):
@@ -79,8 +99,16 @@ def build_lasso_regression(X_train, y_train, alpha=1.0):
     Returns:
         Lasso: Fitted model.
     """
+    # Step 1: Create Lasso model with given alpha
+    model = Lasso(alpha=alpha)
+
+    # Step 2: Train the model using training data
+    model.fit(X_train, y_train)
+
+    # Step 3: Return the trained model
+    return model
     # TODO: Implement this function
-    raise NotImplementedError("Implement build_lasso_regression()")
+    #raise NotImplementedError("Implement build_lasso_regression()")
 
 
 def build_elasticnet_regression(X_train, y_train, alpha=1.0, l1_ratio=0.5):
@@ -96,8 +124,17 @@ def build_elasticnet_regression(X_train, y_train, alpha=1.0, l1_ratio=0.5):
     Returns:
         ElasticNet: Fitted model.
     """
+    
+    # Step 1: Create ElasticNet model with alpha and l1_ratio
+    model = ElasticNet(alpha=alpha, l1_ratio=l1_ratio)
+
+    # Step 2: Train the model using training data
+    model.fit(X_train, y_train)
+
+    # Step 3: Return the trained model
+    return model
     # TODO: Implement this function
-    raise NotImplementedError("Implement build_elasticnet_regression()")
+    #raise NotImplementedError("Implement build_elasticnet_regression()")
 
 
 def build_polynomial_regression(X_train, y_train, degree=2):
@@ -131,7 +168,23 @@ def build_polynomial_regression(X_train, y_train, degree=2):
     #   2. Transform X_train using fit_transform
     #   3. Fit LinearRegression on the transformed features
     #   4. Return both the model and the transformer
-    raise NotImplementedError("Implement build_polynomial_regression()")
+    
+    # Step 1: Create polynomial feature transformer
+    poly = PolynomialFeatures(degree=degree,include_bias=False)
+
+    # Step 2: Transform input features into polynomial features
+    X_poly = poly.fit_transform(X_train)
+
+    # Step 3: Create Linear Regression model
+    model = LinearRegression()
+
+    # Step 4: Train model on transformed features
+    model.fit(X_poly, y_train)
+
+    # Step 5: Return both model and transformer
+    return model, poly
+    
+    #raise NotImplementedError("Implement build_polynomial_regression()")
 
 
 def build_decision_tree(X_train, y_train, max_depth=10, random_state=42):
@@ -166,7 +219,7 @@ def build_random_forest(X_train, y_train, n_estimators=100, max_depth=None, rand
         RandomForestRegressor: Fitted model.
     """
     # TODO: Implement this function
-    raise NotImplementedError("Implement build_random_forest()")
+    #raise NotImplementedError("Implement build_random_forest()")
 
 
 def build_gradient_boosting(X_train, y_train, n_estimators=100, learning_rate=0.1, random_state=42):

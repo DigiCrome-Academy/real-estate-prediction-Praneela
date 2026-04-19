@@ -36,7 +36,20 @@ def load_housing_data():
     #   1. Use fetch_california_housing(as_frame=True)
     #   2. The target variable should be named 'MedHouseVal'
     #   3. Return a single DataFrame with features AND target combined
-    raise NotImplementedError("Implement load_housing_data()")
+    
+    """Download and save data to the local drive."""
+    # Load dataset as DataFrame
+    housing = fetch_california_housing(as_frame=True)
+    
+    # Features DataFrame
+    df = housing.data.copy()
+    
+    # Add target column
+    df["MedHouseVal"] = housing.target
+    
+    return df
+    #raise NotImplementedError("Implement load_housing_data()")
+    
 
 
 def preprocess_features(df, target_col='MedHouseVal'):
@@ -67,7 +80,30 @@ def preprocess_features(df, target_col='MedHouseVal'):
     #   1. Separate X (features) and y (target)
     #   2. Fit a StandardScaler on X
     #   3. Return the scaled X, y, feature names, and the scaler
-    raise NotImplementedError("Implement preprocess_features()")
+    
+    # 1. Separate features and target
+    X = df.drop(columns=[target_col]).values
+    
+    # 2. Extract target values and converts from Pandas Series to NumPy array
+    y = df[target_col].values
+    
+    # 3. Store feature names and converts it into a Python list
+    feature_names = X.columns.tolist()
+    
+    # 4. Creates a StandardScaler object from sklearn.preprocessing, which will be used to standardize the features.
+    scaler = StandardScaler()
+    
+    # 5. Fit the scaler to the feature data X and transform it, 
+    # resulting in a new array X_scaled where each feature has been standardized to have a mean of 0 and a standard deviation of 1.
+    X_scaled = scaler.fit_transform(X)
+    
+    # 6. X_scaled → Scaled feature matrix (NumPy array)
+    #    y → Target values (NumPy array)
+    #    feature_names → List of column names
+    #    scaler → Fitted scaler object
+    return X_scaled, y, feature_names, scaler
+
+    #raise NotImplementedError("Implement preprocess_features()")
 
 
 def split_data(X, y, test_size=0.2, random_state=42):
@@ -92,8 +128,10 @@ def split_data(X, y, test_size=0.2, random_state=42):
         >>> len(X_test) == 20
         True
     """
+    
+    return train_test_split(X, y, test_size=test_size, random_state=random_state)
     # TODO: Implement this function
-    raise NotImplementedError("Implement split_data()")
+    #raise NotImplementedError("Implement split_data()")
 
 
 def create_feature_engineering(df):
@@ -128,7 +166,12 @@ def create_feature_engineering(df):
     #   1. Make a copy of df to avoid modifying the original
     #   2. Create the three new features described above
     #   3. Handle potential division by zero cases
-    raise NotImplementedError("Implement create_feature_engineering()")
+    #raise NotImplementedError("Implement create_feature_engineering()")
+    df_eng = df.copy()
+    df_eng['rooms_per_household'] = df_eng['AveRooms'] * df_eng['AveOccup']
+    df_eng['bedrooms_ratio'] = df_eng['AveBedrms'] / df_eng['AveRooms'].replace(0, np.nan)
+    df_eng['population_density'] = df_eng['Population'] / df_eng['AveOccup'].replace(0, np.nan)
+    return df_eng
 
 
 if __name__ == "__main__":
